@@ -1,15 +1,29 @@
+// path
+const path = require('path');
+
+// Express
 const express = require('express');
 
-// Router 
+// Root directory path
+const rootDir = require('../util/path');
 
+// Router 
 const router = express.Router();
 
-router.get('/motorcycles', (req, res) => {
-    res.send('<h1>Motorcycle page<h1/>')
+// Dummy data 
+const products = [];
+
+// /admin/add-product => GET
+router.get('/add-product', (req, res, next) => {
+    res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
 });
 
-router.get('/accessories', (req, res) => {
-    res.send('<h1>Accessories page<h1/>')
+// /admin/add-product => POST
+router.post('/add-product', (req, res, next) => {
+    console.log(req.body)
+    // products.push( {title: req.body.title} )
+    res.redirect('/')
 });
 
-module.exports = router;
+exports.routes = router;
+exports.products = products;
