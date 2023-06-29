@@ -2,8 +2,15 @@
 const express = require('express');
 const app = express();
 
+// View engine
+app.set('view engine', 'pug');
+
 // Path
 const path = require('path');
+
+// Body parser 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: false}));
 
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')))
