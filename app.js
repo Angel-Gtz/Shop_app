@@ -2,43 +2,64 @@
 const express = require('express');
 const app = express();
 
-// View engine
-app.set('view engine', 'pug');
+// Set templating engine 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 // Path
 const path = require('path');
 
-// Body parser 
+// // Body parser 
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: false}));
 
-// Serving static files
+// // Serving static files
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Modules
-const shopRoutes = require('./routes/shop');
-const adminData = require('./routes/admin');
+// // Modules
+const shopRoutes = require('./routes/shop'); // ERR
+const adminRoutes = require('./routes/admin'); //ERR
 
-// Port
-const port = 8080;
+// // Controllers
+const error = require('./controllers/error404')
 
-// Modules routes
-
-app.use('/admin', adminData.routes);
-
-app.use(shopRoutes);
-
-app.get('/product', (req, res) => {
-    res.send('<h1>Product page<h1/>')
-});
+// // Modules routes
+app.use('/admin', adminRoutes); //ERR
+app.use(shopRoutes);//ERR
 
 // Error 404 not found
+app.use(error.get404)
 
-app.use('/', (req, res) => {
-    res.status(404).sendFile(path.join(__dirname, 'views', '404.html'))
-})
+// // Port
+const port = 8080;
 
-
-
-// App listener 
+// // App listener 
 app.listen(port, () => console.log(`Listening in port ${port}`));
+
+
+// -------------------------------------------------------------------
+
+// const path = require('path');
+
+// const express = require('express');
+// const bodyParser = require('body-parser');
+
+// const errorController = require('./controllers/error404');
+
+// const app = express();
+
+// app.set('view engine', 'ejs');
+// app.set('views', 'views');
+
+// const adminRoutes = require('./routes/admin');
+// const shopRoutes = require('./routes/shop');
+
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use('/admin', adminRoutes);
+// app.use(shopRoutes);
+
+// app.use(errorController.get404);
+
+// app.listen(8080);

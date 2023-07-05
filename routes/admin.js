@@ -5,25 +5,19 @@ const path = require('path');
 const express = require('express');
 
 // Root directory path
-const rootDir = require('../util/path');
+const rootDir = require('../util/path'); // Not in use
 
 // Router 
 const router = express.Router();
 
-// Dummy data 
-const products = [];
+// Controller
+const productsController = require('../controllers/products'); 
 
 // /admin/add-product => GET
-router.get('/add-product', (req, res, next) => {
-    res.sendFile(path.join(rootDir, 'views', 'add-product.html'))
-});
+router.get('/add-product', productsController.getAddProduct);
 
 // /admin/add-product => POST
-router.post('/add-product', (req, res, next) => {
-    console.log(req.body)
-    // products.push( {title: req.body.title} )
-    res.redirect('/')
-});
+router.post('/add-product', productsController.postAddProduct);
 
-exports.routes = router;
-exports.products = products;
+module.exports = router;
+
