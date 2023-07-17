@@ -2,42 +2,38 @@
 const express = require('express');
 const app = express();
 
-// Modules
-const shopRoutes = require('./routes/shop');
-const adminRoutes = require('./routes/admin');
+// Set templating engine 
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-// Port
+// Path
+const path = require('path');
+
+// // Body parser 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended: false}));
+
+// // Serving static files
+app.use(express.static(path.join(__dirname, 'public')))
+
+// // Modules
+const shopRoutes = require('./routes/shop'); // ERR
+const adminRoutes = require('./routes/admin'); //ERR
+
+// // Controllers
+const error = require('./controllers/error404')
+
+// // Modules routes
+app.use('/admin', adminRoutes); //ERR
+app.use(shopRoutes);//ERR
+
+// Error 404 not found
+app.use(error.get404)
+
+// // Port
 const port = 8080;
 
-app.get('*', (req, res) => {
-    const searchTerm = req.params
-    res.send(`Search term: ${ searchTerm[0].slice(1, searchTerm[0].length) }`)
-});
-
-app.get('/', (req, res) => {
-    res.send('<h1>Welcome to the home page<h1/>')
-});
-
-// Modules routes
-
-app.use(shopRoutes)
-
-app.use('/shop', adminRoutes)
-
-app.get('/product', (req, res) => {
-    res.send('<h1>Product page<h1/>')
-});
-
-
-// App Use
-
-app.use((req, res) => {
-    const searchTerm = req.query.term
-    console.log(searchTerm)
-    res.status(404).send(`<h1>Sorry but we couldn't found any results for ${searchTerm}<h1/>`)
-});
-
-
-
-// App listener 
+// // App listener 
 app.listen(port, () => console.log(`Listening in port ${port}`));
+
+

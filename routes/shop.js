@@ -4,10 +4,11 @@ const express = require('express');
 // Import routes
 const router = express.Router();
 
-// Route
-router.get('/shop', (req, res, next) => {
-    res.send('<h1>Welcome to the shop<h1/>')
-});
+// Controller 
+const productsController = require('../controllers/products')
+
+// Routes
+router.get('/', productsController.getProducts);
+
 
 module.exports = router;
-

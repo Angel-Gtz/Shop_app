@@ -1,15 +1,23 @@
+// path
+const path = require('path');
+
+// Express
 const express = require('express');
 
-// Router 
+// Root directory path
+const rootDir = require('../util/path'); // Not in use
 
+// Router 
 const router = express.Router();
 
-router.get('/motorcycles', (req, res) => {
-    res.send('<h1>Motorcycle page<h1/>')
-});
+// Controller
+const productsController = require('../controllers/products'); 
 
-router.get('/accessories', (req, res) => {
-    res.send('<h1>Accessories page<h1/>')
-});
+// /admin/add-product => GET
+router.get('/add-product', productsController.getAddProduct);
+
+// /admin/add-product => POST
+router.post('/add-product', productsController.postAddProduct);
 
 module.exports = router;
+
